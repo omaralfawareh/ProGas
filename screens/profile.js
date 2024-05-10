@@ -4,12 +4,24 @@ import { useContext } from "react";
 import AuthContext from "../store/auth-context";
 import { Avatar, BottomSheet, Card as RCard, Icon } from "@rneui/themed";
 import { Input, Button } from "native-base";
-
+import { auth } from "../firebase";
+import { sendPasswordResetEmail } from "firebase/auth";
 import Card from "../components/profile/Card";
 function Profile() {
   const authCtx = useContext(AuthContext);
   const [isAccountVisible, setIsAcountVisible] = useState(false);
+  const [isResetPassword, setIsResetPassword] = useState(false);
 
+  function changePassword() {
+    if (!authCtx?.user) return;
+    sendPasswordResetEmail(auth, authCtx?.user?.email)
+      .then(() => {
+        console.log("SUCCESS");
+      })
+      .catch(() => {
+        console.log("FAILED");
+      });
+  }
   return (
     <View style={style.container}>
       <View
@@ -28,8 +40,10 @@ function Profile() {
             uri: "https://cdn-icons-png.freepik.com/512/147/147142.png?ga=GA1.1.1980490144.1701362827",
           }}
         ></Avatar>
-        <Text style={{ ...style.title, fontSize: 25 }}>Omar Alfawareh</Text>
-        <Text style={{}}>alfawareho@gmail.com</Text>
+        <Text style={{ ...style.title, fontSize: 25 }}>
+          {authCtx?.user?.name || "Omar Alfawareh"}
+        </Text>
+        <Text style={{}}>{authCtx?.user?.email}</Text>
       </View>
       <View
         style={{
@@ -58,44 +72,98 @@ function Profile() {
           <Text style={{ ...style.title, marginBottom: 10, fontSize: 20 }}>
             Account Information
           </Text>
-          <Input
-            size="lg"
-            style={style.inputField}
-            type="text"
-            placeholder="Full Name"
-            value={"Omar Alfawareh"}
-            isReadOnly={true}
-          />
-          <Input
-            size="lg"
-            style={style.inputField}
-            type="text"
-            placeholder="Email"
-            value={"alfawareho@gmail.com"}
-            onChangeTex
-            isReadOnly={true}
-          />
-          <Input
-            size="lg"
-            style={style.inputField}
-            type="text"
-            placeholder="Phone Number"
-            value={"0791141046"}
-            isReadOnly={true}
-          />
+          <View style={{ gap: 10 }}>
+            <Input
+              size="lg"
+              style={style.inputField}
+              type="text"
+              placeholder="Full Name"
+              value={"Omar Alfawareh"}
+              isReadOnly={true}
+            />
+            <Input
+              size="lg"
+              style={style.inputField}
+              type="text"
+              placeholder="Email"
+              value={"alfawareho@gmail.com"}
+              onChangeTex
+              isReadOnly={true}
+            />
+            <Input
+              size="lg"
+              style={style.inputField}
+              type="text"
+              placeholder="Phone Number"
+              value={"0791141046"}
+              isReadOnly={true}
+            />
+          </View>
+          <Text style={{ ...style.title, marginVertical: 10, fontSize: 20 }}>
+            Subscription
+          </Text>
+          <View style={{ gap: 10 }}>
+            <Input
+              size="lg"
+              style={style.inputField}
+              type="text"
+              placeholder="Full Name"
+              value={"Basic Subscription"}
+              isReadOnly={true}
+            />
+          </View>
           <View style={{ alignItems: "center" }}>
             <Button
               borderRadius="full"
               colorScheme="success"
               onPress={() => setIsAcountVisible(false)}
-              style={{ marginTop: 200, width: 55, height: 55 }}
+              style={{ marginTop: 60, width: 55, height: 55 }}
             >
               <Icon name="close" type="material" />
             </Button>
           </View>
         </RCard>
       </BottomSheet>
-      <Card text="Change Password" icon="lock" color="black" />
+      <Card
+        text="Reset Password"
+        icon="lock"
+        color="black"
+        onPress={() => setIsResetPassword(true)}
+      />
+      <BottomSheet
+        isVisible={isResetPassword}
+        onBackdropPress={() => setIsResetPassword(false)}
+        containerStyle={{
+          borderWidth: 2,
+          borderColor: "red",
+        }}
+      >
+        <RCard containerStyle={style.card}>
+          <Text style={{ ...style.title, marginBottom: 10, fontSize: 20 }}>
+            Reset Password
+          </Text>
+          <View style={{ gap: 10 }}>
+            <Text>Press confirm to reset your password.</Text>
+            <Text>An email will be sent to you.</Text>
+            <Text>Follow the provided instructions in the email.</Text>
+          </View>
+          <View style={{ paddingVertical: 50 }}>
+            <Button colorScheme="success" onPress={changePassword}>
+              Confirm Password Reset
+            </Button>
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <Button
+              borderRadius="full"
+              colorScheme="success"
+              onPress={() => setIsResetPassword(false)}
+              style={{ marginTop: 25, width: 55, height: 55 }}
+            >
+              <Icon name="close" type="material" />
+            </Button>
+          </View>
+        </RCard>
+      </BottomSheet>
       <Card text="FAQ" icon="help" color="black" />
       <Card
         text="Logout"
@@ -139,6 +207,6 @@ const style = StyleSheet.create({
   inputField: {
     backgroundColor: "white",
     borderRadius: 13,
-    marginBottom: 15,
+    marginBottom: 10,
   },
 });

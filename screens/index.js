@@ -16,7 +16,7 @@ function Index() {
       <NavigationContainer>
         <Stack.Navigator>
           <>
-            {authCtx?.user ? (
+            {authCtx?.user || authCtx.anonymous.isAnonymous ? (
               <Stack.Screen
                 name="Drawer"
                 component={Drawer}

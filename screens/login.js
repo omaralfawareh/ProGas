@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useState, useContext } from "react";
 import { Input, Button, Image } from "native-base";
 import { useNavigation } from "@react-navigation/native";
@@ -58,6 +58,15 @@ function Login() {
         >
           SignUp
         </Button>
+      </View>
+      <View style={style.inputFieldContainer}>
+        <Pressable
+          onPress={() => {
+            authCtx.anonymous.setIsAnonymous(true);
+          }}
+        >
+          <Text style={{ color: "black" }}>Continue Anonymously</Text>
+        </Pressable>
       </View>
     </View>
   );

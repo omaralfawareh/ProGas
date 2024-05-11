@@ -41,15 +41,17 @@ function Profile() {
           }}
         ></Avatar>
         <Text style={{ ...style.title, fontSize: 25 }}>
-          {authCtx?.user?.name || "Omar Alfawareh"}
+          {authCtx?.anonymous.isAnonymous
+            ? "Anonymous User"
+            : authCtx?.user
+            ? authCtx?.user?.name
+            : "Omar Alfawareh"}
         </Text>
         <Text style={{}}>{authCtx?.user?.email}</Text>
       </View>
       <View
         style={{
           width: "100%",
-          // borderWidth: 2,
-          //  borderColor: "red",
         }}
       >
         <Text style={{ ...style.title, fontSize: 20 }}>Settings</Text>
@@ -168,7 +170,10 @@ function Profile() {
       <Card
         text="Logout"
         icon="logout"
-        onPress={authCtx.signOut}
+        onPress={() => {
+          authCtx.signOut;
+          authCtx.anonymous.setIsAnonymous(false);
+        }}
         color="red"
         extraStyle={{ fontWeight: "bold" }}
       />

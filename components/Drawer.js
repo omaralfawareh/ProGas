@@ -23,8 +23,8 @@ function Drawer() {
       }}
     >
       <Drawer.Screen name="Home" component={Home}></Drawer.Screen>
-      <Drawer.Screen name="Profile" component={Profile}></Drawer.Screen>
       <Drawer.Screen name="Offers" component={OffersPage}></Drawer.Screen>
+      <Drawer.Screen name="Profile" component={Profile}></Drawer.Screen>
     </Drawer.Navigator>
   );
 }

@@ -1,4 +1,6 @@
 import Profile from "../screens/profile";
+import OffersPage from "../screens/Offers";
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home from "../screens/home";
 function Drawer() {
@@ -22,6 +24,7 @@ function Drawer() {
     >
       <Drawer.Screen name="Home" component={Home}></Drawer.Screen>
       <Drawer.Screen name="Profile" component={Profile}></Drawer.Screen>
+      <Drawer.Screen name="Offers" component={OffersPage}></Drawer.Screen>
     </Drawer.Navigator>
   );
 }

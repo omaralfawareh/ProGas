@@ -1,11 +1,29 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 import { Input, Button } from "native-base";
+import { signUpWithEmail as signUp } from "../auth-util";
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  function validatePassword() {
+    return true;
+  }
+  function validateEmail() {
+    return true;
+  }
+  function handleSignUp() {
+    if (validatePassword() && validateEmail()) {
+      signUp(email, password)
+        .then(() => {
+          console.log("SignUp Successful");
+        })
+        .catch(() => {
+          console.log("SignUp Failed");
+        });
+    }
+  }
   return (
     <View style={style.inputContainer}>
       <Text style={style.text}>SignUp</Text>
@@ -37,7 +55,11 @@ function SignUp() {
         ></Input>
       </View>
       <View style={style.inputFieldContainer}>
-        <Button style={style.button} colorScheme="success">
+        <Button
+          style={style.button}
+          colorScheme="success"
+          onPress={handleSignUp}
+        >
           SignUp
         </Button>
       </View>

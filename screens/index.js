@@ -11,7 +11,6 @@ const Stack = createStackNavigator();
 
 function Index() {
   const authCtx = useContext(AuthContext);
-  // console.log(authCtx?.user);
   return (
     <NativeBaseProvider>
       <NavigationContainer>

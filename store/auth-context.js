@@ -6,9 +6,11 @@ const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState(auth?.currentUser);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const googleLogin = loginWithGoogle;
   const signOut = logout;
   const login = loginWithEmail;
+  const anonymous = { isAnonymous, setIsAnonymous };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -17,7 +19,9 @@ export function AuthContextProvider({ children }) {
     return () => unsubscribe();
   }, [user]);
   return (
-    <AuthContext.Provider value={{ user, googleLogin, signOut, login }}>
+    <AuthContext.Provider
+      value={{ user, googleLogin, signOut, login, anonymous }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,9 +1,8 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { useState, useContext } from "react";
-import { Input, Button } from "native-base";
+import { Input, Button, Image } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../store/auth-context";
-
 function Login() {
   const [email, setEmail] = useState("omar@gmail.com");
   const [password, setPassword] = useState("password");
@@ -12,6 +11,11 @@ function Login() {
 
   return (
     <View style={style.inputContainer}>
+      <Image
+        style={style.logo}
+        source={require("../assets/proGas.png")}
+        alt="proGas Logo"
+      />
       <Text style={style.text}>Login</Text>
       <View style={style.inputFieldContainer}>
         <Input
@@ -81,5 +85,10 @@ const style = StyleSheet.create({
   inputField: {},
   button: {
     width: "100%",
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
   },
 });

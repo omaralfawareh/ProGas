@@ -49,7 +49,7 @@ const style = StyleSheet.create({
   },
   title: { textAlign: "left", fontWeight: "bold" },
   card: {
-    borderRadius: 13,
+    borderRadius: 8,
     width: "100%",
     margin: "0",
   },

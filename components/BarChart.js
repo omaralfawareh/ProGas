@@ -1,19 +1,12 @@
-import {
-  LineChart,
-  BarChart as Bar,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { BarChart as Bar } from "react-native-chart-kit";
 import { View, Dimensions } from "react-native";
 
 function BarChart() {
   const data = {
-    labels: ["January", "February", "March"],
+    labels: ["Gasoline", "Diesel", "Natural Gas"],
     datasets: [
       {
-        data: [20, 45, 28],
+        data: [120, 110, 135],
       },
     ],
   };

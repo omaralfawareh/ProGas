@@ -7,6 +7,7 @@ import { Input, Button } from "native-base";
 import { auth } from "../firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Card from "../components/profile/Card";
+
 function Profile() {
   const authCtx = useContext(AuthContext);
   const [isAccountVisible, setIsAcountVisible] = useState(false);
@@ -119,7 +120,7 @@ function Profile() {
               borderRadius="full"
               colorScheme="success"
               onPress={() => setIsAcountVisible(false)}
-              style={{ marginTop: 60, width: 55, height: 55 }}
+              style={{ marginTop: 55, width: 55, height: 55 }}
             >
               <Icon name="close" type="material" />
             </Button>
@@ -135,10 +136,7 @@ function Profile() {
       <BottomSheet
         isVisible={isResetPassword}
         onBackdropPress={() => setIsResetPassword(false)}
-        containerStyle={{
-          borderWidth: 2,
-          borderColor: "red",
-        }}
+        containerStyle={{}}
       >
         <RCard containerStyle={style.card}>
           <Text style={{ ...style.title, marginBottom: 10, fontSize: 20 }}>
@@ -159,7 +157,7 @@ function Profile() {
               borderRadius="full"
               colorScheme="success"
               onPress={() => setIsResetPassword(false)}
-              style={{ marginTop: 25, width: 55, height: 55 }}
+              style={{ marginTop: 125, width: 55, height: 55 }}
             >
               <Icon name="close" type="material" />
             </Button>
@@ -171,19 +169,12 @@ function Profile() {
         text="Logout"
         icon="logout"
         onPress={() => {
-          authCtx.signOut;
+          authCtx?.signOut();
           authCtx.anonymous.setIsAnonymous(false);
         }}
         color="red"
         extraStyle={{ fontWeight: "bold" }}
       />
-      {/* <Button
-        style={style.button}
-        colorScheme="success"
-        onPress={authCtx.signOut}
-      >
-        Logout
-      </Button> */}
     </View>
   );
 }
@@ -191,8 +182,6 @@ export default Profile;
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    // borderWidth: 2,
-    // borderColor: "red",
     padding: 10,
     alignItems: "center",
     gap: 10,
@@ -204,9 +193,7 @@ const style = StyleSheet.create({
   card: {
     width: "100%",
     margin: "0",
-    // paddingBottom: 200,
     borderRadius: 13,
-    borderColor: "blue",
     padding: 10,
   },
   inputField: {

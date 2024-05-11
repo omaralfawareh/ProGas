@@ -1,11 +1,4 @@
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 import { View, Text, Dimensions } from "react-native";
 
 function Graph() {
@@ -43,8 +36,19 @@ function Graph() {
                 Math.random() * 100,
               ],
             },
+            {
+              data: [
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+              ],
+              color: (opacity = 1) => `rgba(1, 1, 122, ${opacity})`, // Red color for the first dataset
+            },
           ],
-          legend: ["Gasoline 95"], // optional
+          legend: ["Actual", "Predicted"], // optional
         }}
         width={Dimensions.get("window").width - 20} // from react-native
         height={220}

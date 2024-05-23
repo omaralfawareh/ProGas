@@ -8,6 +8,11 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   function validatePassword() {
+    if (password.length < 6) {
+      return false;
+    } else if (password !== confirmPassword) {
+      return false;
+    }
     return true;
   }
   function validateEmail() {

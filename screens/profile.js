@@ -66,10 +66,6 @@ function Profile() {
       <BottomSheet
         isVisible={isAccountVisible}
         onBackdropPress={() => setIsAcountVisible(false)}
-        containerStyle={{
-          borderWidth: 2,
-          borderColor: "red",
-        }}
       >
         <RCard containerStyle={style.card}>
           <Text style={{ ...style.title, marginBottom: 10, fontSize: 20 }}>

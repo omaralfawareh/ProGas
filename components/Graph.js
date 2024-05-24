@@ -11,16 +11,6 @@ function Graph() {
         paddingHorizontal: 20,
       }}
     >
-      <Text
-        style={{
-          fontSize: 20,
-          textAlign: "left",
-          fontWeight: "bold",
-          alignSelf: "flex-start",
-        }}
-      >
-        Gasoline
-      </Text>
       <LineChart
         data={{
           labels: ["January", "February", "March", "April", "May", "June"],

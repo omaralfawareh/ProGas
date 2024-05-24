@@ -7,11 +7,13 @@ import { Input, Button } from "native-base";
 import { auth } from "../firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Card from "../components/profile/Card";
+import { useTheme } from "../store/theme-context";
 
 function Profile() {
   const authCtx = useContext(AuthContext);
   const [isAccountVisible, setIsAcountVisible] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
+  const { colors } = useTheme();
 
   function changePassword() {
     if (!authCtx?.user) return;
@@ -23,6 +25,35 @@ function Profile() {
         console.log("FAILED");
       });
   }
+
+  const style = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 10,
+      alignItems: "center",
+      gap: 10,
+      backgroundColor: colors.background,
+    },
+    button: {
+      width: "100%",
+    },
+    title: { color: colors.text, textAlign: "left", fontWeight: "bold" },
+    card: {
+      width: "100%",
+      margin: "0",
+      borderRadius: 13,
+      padding: 10,
+      backgroundColor: colors.background,
+    },
+    inputField: {
+      backgroundColor: colors.card,
+      borderColor: "transparent",
+      borderWidth: 0,
+      color: colors.text,
+      borderRadius: 13,
+      marginBottom: 10,
+    },
+  });
   return (
     <View style={style.container}>
       <View
@@ -41,26 +72,24 @@ function Profile() {
             uri: "https://cdn-icons-png.freepik.com/512/147/147142.png?ga=GA1.1.1980490144.1701362827",
           }}
         ></Avatar>
-        <Text style={{ ...style.title, fontSize: 25 }}>
+        <Text style={{ ...style.title, fontSize: 25, marginTop: 10 }}>
           {authCtx?.anonymous.isAnonymous
             ? "Anonymous User"
             : authCtx?.user
             ? authCtx?.user?.name
-            : "Omar Alfawareh"}
+            : ""}
         </Text>
-        <Text style={{}}>{authCtx?.user?.email}</Text>
+        <Text style={{ color: colors.text }}>{authCtx?.user?.email}</Text>
       </View>
       <View
         style={{
           width: "100%",
         }}
-      >
-        <Text style={{ ...style.title, fontSize: 20 }}>Settings</Text>
-      </View>
+      ></View>
       <Card
         text="Account Information"
         icon="person"
-        color="black"
+        color={colors.text}
         onPress={() => setIsAcountVisible(true)}
       />
       <BottomSheet
@@ -114,9 +143,14 @@ function Profile() {
           <View style={{ alignItems: "center" }}>
             <Button
               borderRadius="full"
-              colorScheme="success"
+              // colorScheme="success"
               onPress={() => setIsAcountVisible(false)}
-              style={{ marginTop: 55, width: 55, height: 55 }}
+              style={{
+                marginTop: 55,
+                width: 55,
+                height: 55,
+                backgroundColor: "#003e29",
+              }}
             >
               <Icon name="close" type="material" />
             </Button>
@@ -126,7 +160,7 @@ function Profile() {
       <Card
         text="Reset Password"
         icon="lock"
-        color="black"
+        color={colors.text}
         onPress={() => setIsResetPassword(true)}
       />
       <BottomSheet
@@ -139,12 +173,22 @@ function Profile() {
             Reset Password
           </Text>
           <View style={{ gap: 10 }}>
-            <Text>Press confirm to reset your password.</Text>
-            <Text>An email will be sent to you.</Text>
-            <Text>Follow the provided instructions in the email.</Text>
+            <Text style={{ color: colors.text }}>
+              Press confirm to reset your password.
+            </Text>
+            <Text style={{ color: colors.text }}>
+              An email will be sent to you.
+            </Text>
+            <Text style={{ color: colors.text }}>
+              Follow the provided instructions in the email.
+            </Text>
           </View>
           <View style={{ paddingVertical: 50 }}>
-            <Button colorScheme="success" onPress={changePassword}>
+            <Button
+              colorScheme="success"
+              style={{ backgroundColor: "#003e29" }}
+              onPress={changePassword}
+            >
               Confirm Password Reset
             </Button>
           </View>
@@ -153,14 +197,19 @@ function Profile() {
               borderRadius="full"
               colorScheme="success"
               onPress={() => setIsResetPassword(false)}
-              style={{ marginTop: 125, width: 55, height: 55 }}
+              style={{
+                marginTop: 125,
+                width: 55,
+                height: 55,
+                backgroundColor: "#003e29",
+              }}
             >
               <Icon name="close" type="material" />
             </Button>
           </View>
         </RCard>
       </BottomSheet>
-      <Card text="FAQ" icon="help" color="black" />
+      <Card text="FAQ" icon="help" color={colors.text} />
       <Card
         text="Logout"
         icon="logout"
@@ -175,26 +224,3 @@ function Profile() {
   );
 }
 export default Profile;
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    alignItems: "center",
-    gap: 10,
-  },
-  button: {
-    width: "100%",
-  },
-  title: { textAlign: "left", fontWeight: "bold" },
-  card: {
-    width: "100%",
-    margin: "0",
-    borderRadius: 13,
-    padding: 10,
-  },
-  inputField: {
-    backgroundColor: "white",
-    borderRadius: 13,
-    marginBottom: 10,
-  },
-});

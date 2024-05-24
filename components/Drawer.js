@@ -4,11 +4,13 @@ import Home from "../screens/home";
 import OffersPage from "../screens/Offers";
 import Profile from "../screens/profile";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useTheme } from "../store/theme-context";
 
 const Tab = createBottomTabNavigator();
 
 function Drawer() {
-  // Retaining the same name for the component
+  const { theme, colors } = useTheme();
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -29,10 +31,10 @@ function Drawer() {
         tabBarActiveTintColor: "#4caf50",
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          backgroundColor: "white",
+          backgroundColor: colors.card,
         },
         headerStyle: {
-          backgroundColor: "#4caf50",
+          backgroundColor: theme === "light" ? "#5cb25d" : "black",
         },
         headerTitleStyle: { color: "white" },
       })}

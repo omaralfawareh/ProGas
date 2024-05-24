@@ -1,7 +1,11 @@
 import { BarChart as Bar } from "react-native-chart-kit";
 import { View, Dimensions } from "react-native";
+import { useTheme } from "../store/theme-context";
+import { color } from "@rneui/base";
 
 function BarChart() {
+  const { theme } = useTheme();
+
   const data = {
     labels: ["Gasoline", "Diesel", "Natural Gas"],
     datasets: [
@@ -23,22 +27,21 @@ function BarChart() {
         data={data}
         width={Dimensions.get("window").width - 20}
         height={250}
-        yAxisLabel="$"
+        yAxisLabel=""
         chartConfig={{
-          backgroundColor: "#4caf50", // Green main color
-          backgroundGradientFrom: "#4caf50", // Green gradient start color
-          backgroundGradientTo: "#81c784", // Green gradient end color
+          backgroundColor: theme === "light" ? "#003e29" : "black",
+          backgroundGradientFrom: theme === "light" ? "#003e29" : "black", // Green gradient start color
+          backgroundGradientTo: theme === "light" ? "#81c784" : "black", // Green gradient end color
           decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          color: (opacity = 0.1) => `rgba(0, 255, 0,${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 13,
-          },
         }}
+        fromZero={true}
         style={{
           marginVertical: 8,
           borderRadius: 16,
         }}
+        showValuesOnTopOfBars
       />
     </View>
   );

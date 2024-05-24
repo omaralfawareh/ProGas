@@ -1,7 +1,10 @@
 import { LineChart } from "react-native-chart-kit";
-import { View, Text, Dimensions } from "react-native";
+import { View, Dimensions } from "react-native";
+import { useTheme } from "../store/theme-context";
 
 function Graph() {
+  const { theme, colors } = useTheme();
+
   return (
     <View
       style={{
@@ -13,7 +16,15 @@ function Graph() {
     >
       <LineChart
         data={{
-          labels: ["January", "February", "March", "April", "May", "June"],
+          labels: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+          ],
 
           datasets: [
             {
@@ -35,21 +46,23 @@ function Graph() {
                 Math.random() * 100,
                 Math.random() * 100,
               ],
-              color: (opacity = 1) => `rgba(1, 1, 122, ${opacity})`, // Red color for the first dataset
+              color: () => {
+                return theme === "light" ? "black" : "#003e29";
+              },
             },
           ],
           legend: ["Actual", "Predicted"], // optional
         }}
         width={Dimensions.get("window").width - 20} // from react-native
         height={220}
-        yAxisLabel="$"
+        yAxisLabel="JOD"
         // yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
+        yAxisInterval={0.5} // optional, defaults to 1
         chartConfig={{
-          backgroundColor: "#4caf50", // Green main color
-          backgroundGradientFrom: "#4caf50", // Green gradient start color
-          backgroundGradientTo: "#81c784", // Green gradient end color
-          decimalPlaces: 2, // optional, defaults to 2dp
+          backgroundColor: colors.graphBackground,
+          backgroundGradientFrom: colors.graphBackground,
+          backgroundGradientTo: theme === "light" ? "#81c784" : "black",
+          decimalPlaces: 2,
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
@@ -58,10 +71,9 @@ function Graph() {
           propsForDots: {
             r: "6",
             strokeWidth: "2",
-            stroke: "darkgreen",
+            stroke: "#5cb25d",
           },
         }}
-        bezier
         style={{
           marginVertical: 8,
           borderRadius: 16,

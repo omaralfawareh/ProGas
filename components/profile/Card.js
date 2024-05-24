@@ -6,7 +6,10 @@ function Card(props) {
   const { text, icon, onPress, color, extraStyle } = props;
   return (
     <TouchableOpacity style={{ width: "100%" }} onPress={onPress}>
-      <RCard containerStyle={style.card} rounded>
+      <RCard
+        containerStyle={[style.card, { borderColor: "transparent" }]}
+        rounded
+      >
         <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
           <Avatar
             size={35}
@@ -15,15 +18,13 @@ function Card(props) {
               name: icon,
               type: "material",
             }}
-            containerStyle={{ backgroundColor: "green" }}
+            containerStyle={{ backgroundColor: "#003e29" }}
           />
           <Text
             style={{
               fontSize: 15,
               color: color,
               ...extraStyle,
-              //   borderWidth: 1,
-              //   borderColor: "black",
             }}
           >
             {text}
@@ -37,8 +38,6 @@ export default Card;
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 2,
-    borderColor: "red",
     padding: 10,
     alignItems: "center",
     gap: 10,
@@ -52,5 +51,6 @@ const style = StyleSheet.create({
     borderRadius: 8,
     width: "100%",
     margin: "0",
+    backgroundColor: "black",
   },
 });

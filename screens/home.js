@@ -2,10 +2,39 @@ import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Graph from "../components/Graph";
 import BarChart from "../components/BarChart";
-
+import { useTheme } from "../store/theme-context";
 function Home() {
   const [dataType, setDataType] = useState("Gasoline");
-
+  const { colors } = useTheme();
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.background,
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      width: "100%",
+      padding: 10,
+      paddingTop: 0,
+    },
+    button: {
+      padding: 10,
+      borderRadius: 20, // Make buttons rounded
+      backgroundColor: "#bcbdbc",
+      alignItems: "center",
+      width: "30%",
+    },
+    activeButton: {
+      backgroundColor: colors.button, // Active button color
+    },
+    buttonText: {
+      color: "white",
+      fontWeight: "bold",
+    },
+  });
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -41,32 +70,3 @@ function Home() {
 }
 
 export default Home;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    padding: 10,
-    paddingTop: 0,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 20, // Make buttons rounded
-    backgroundColor: "gray",
-    alignItems: "center",
-    width: "30%",
-  },
-  activeButton: {
-    backgroundColor: "#4caf50", // Active button color
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-});

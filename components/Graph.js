@@ -10,7 +10,7 @@ function Graph() {
       style={{
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 10,
+        paddingTop: 10,
         paddingHorizontal: 20,
       }}
     >

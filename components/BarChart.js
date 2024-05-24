@@ -21,6 +21,8 @@ function BarChart() {
         alignItems: "center",
         paddingVertical: 10,
         paddingHorizontal: 20,
+        padding: 0,
+        margin: 0,
       }}
     >
       <Bar
@@ -33,12 +35,15 @@ function BarChart() {
           backgroundGradientFrom: theme === "light" ? "#003e29" : "black", // Green gradient start color
           backgroundGradientTo: theme === "light" ? "#81c784" : "black", // Green gradient end color
           decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 0.1) => `rgba(0, 255, 0,${opacity})`,
+          color: (opacity = 1) => {
+            return theme === "light"
+              ? `rgba(255, 255, 255, ${opacity})`
+              : `rgba(0, 255, 0, ${opacity + 0.15})`;
+          },
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         }}
         fromZero={true}
         style={{
-          marginVertical: 8,
           borderRadius: 16,
         }}
         showValuesOnTopOfBars

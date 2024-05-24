@@ -13,7 +13,7 @@ function Profile() {
   const authCtx = useContext(AuthContext);
   const [isAccountVisible, setIsAcountVisible] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
 
   function changePassword() {
     if (!authCtx?.user) return;
@@ -149,7 +149,7 @@ function Profile() {
                 marginTop: 55,
                 width: 55,
                 height: 55,
-                backgroundColor: "#003e29",
+                backgroundColor: theme === "light" ? "#5cb25d" : "#003e29",
               }}
             >
               <Icon name="close" type="material" />
@@ -186,7 +186,9 @@ function Profile() {
           <View style={{ paddingVertical: 50 }}>
             <Button
               colorScheme="success"
-              style={{ backgroundColor: "#003e29" }}
+              style={{
+                backgroundColor: theme === "light" ? "#5cb25d" : "#003e29",
+              }}
               onPress={changePassword}
             >
               Confirm Password Reset
@@ -201,7 +203,7 @@ function Profile() {
                 marginTop: 125,
                 width: 55,
                 height: 55,
-                backgroundColor: "#003e29",
+                backgroundColor: theme === "light" ? "#5cb25d" : "#003e29",
               }}
             >
               <Icon name="close" type="material" />

@@ -2,10 +2,13 @@ import { View, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 import { Input, Button } from "native-base";
 import { signUpWithEmail as signUp } from "../auth-util";
+import { useTheme } from "../store/theme-context";
+
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { theme, colors } = useTheme();
 
   function validatePassword() {
     if (password.length < 6) {
@@ -29,6 +32,33 @@ function SignUp() {
         });
     }
   }
+  const style = StyleSheet.create({
+    inputContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.card,
+    },
+    text: {
+      fontSize: 30,
+      marginBottom: 50,
+      textAlign: "center",
+      color: "#4caf50",
+      fontWeight: "bold",
+    },
+    inputFieldContainer: {
+      alignItems: "center",
+      width: "80%",
+      marginBottom: 15,
+    },
+    inputField: {
+      color: colors.text,
+      backgroundColor: colors.background,
+    },
+    button: {
+      width: "100%",
+    },
+  });
   return (
     <View style={style.inputContainer}>
       <Text style={style.text}>SignUp</Text>
@@ -72,27 +102,3 @@ function SignUp() {
   );
 }
 export default SignUp;
-
-const style = StyleSheet.create({
-  inputContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 30,
-    marginBottom: 50,
-    textAlign: "center",
-    color: "#4caf50",
-    fontWeight: "bold",
-  },
-  inputFieldContainer: {
-    alignItems: "center",
-    width: "80%",
-    marginBottom: 15,
-  },
-  inputField: {},
-  button: {
-    width: "100%",
-  },
-});

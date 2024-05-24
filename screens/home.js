@@ -1,17 +1,37 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from "react-native";
 import Graph from "../components/Graph";
 import BarChart from "../components/BarChart";
 import { useTheme } from "../store/theme-context";
+import PriceHighlight from "../components/PriceHighlight";
+
 function Home() {
   const [dataType, setDataType] = useState("Gasoline");
   const { colors } = useTheme();
+
+  // Mock predicted prices and trends
+  const predictedPrices = {
+    Gasoline: { price: 1.2, trend: "up" },
+    Diesel: { price: 1.1, trend: "down" },
+    NaturalGas: { price: 0.9, trend: "up" },
+  };
+
+  const currentPrediction = predictedPrices[dataType];
+
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      backgroundColor: colors.background,
+    },
+    contentContainer: {
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: colors.background,
+      paddingVertical: 20,
     },
     buttonContainer: {
       flexDirection: "row",
@@ -23,20 +43,33 @@ function Home() {
     button: {
       padding: 10,
       borderRadius: 20, // Make buttons rounded
-      backgroundColor: "#bcbdbc",
+      backgroundColor: "#3b3b3b",
       alignItems: "center",
       width: "30%",
     },
     activeButton: {
       backgroundColor: colors.button, // Active button color
+      borderWidth: 0.9,
+      borderColor: "white",
     },
     buttonText: {
       color: "white",
       fontWeight: "bold",
     },
+    priceHighlight: {
+      marginTop: 10,
+      marginBottom: 5,
+      height: 80,
+      justifyContent: "center",
+      alignItems: "center",
+    },
   });
+
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[
@@ -58,14 +91,21 @@ function Home() {
             styles.button,
             dataType === "Natural Gas" && styles.activeButton,
           ]}
-          onPress={() => setDataType("Natural Gas")}
+          onPress={() => setDataType("NaturalGas")}
         >
           <Text style={styles.buttonText}>Natural Gas</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.priceHighlight}>
+        <PriceHighlight
+          dataType={dataType}
+          price={currentPrediction.price}
+          trend={currentPrediction.trend}
+        />
+      </View>
       <Graph dataType={dataType} />
       <BarChart dataType={dataType} />
-    </View>
+    </ScrollView>
   );
 }
 

@@ -2,10 +2,12 @@ import { Card as RCard } from "@rneui/themed";
 import { Avatar } from "@rneui/themed";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTheme } from "../../store/theme-context";
-
+import { Switch } from "native-base";
 function Card(props) {
   const { text, icon, onPress, color, extraStyle } = props;
-  const { colors, theme } = useTheme();
+  const { colors, theme, toggleTheme } = useTheme();
+  const isDarkTheme = theme === "dark";
+
   const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -21,17 +23,32 @@ function Card(props) {
     card: {
       borderRadius: 8,
       width: "100%",
-      margin: "0",
+      margin: 0,
       backgroundColor: colors.card,
     },
   });
+
+  const handlePress = () => {
+    if (text === "Dark Mode") {
+      toggleTheme(); // Toggle the theme when "Dark Mode" card is pressed
+    } else {
+      onPress(); // Call the original onPress function for other cards
+    }
+  };
+
   return (
-    <TouchableOpacity style={{ width: "100%" }} onPress={onPress}>
+    <TouchableOpacity style={{ width: "100%" }} onPress={handlePress}>
       <RCard
         containerStyle={[style.card, { borderColor: "transparent" }]}
         rounded
       >
-        <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 10,
+            alignItems: "center",
+          }}
+        >
           <Avatar
             size={35}
             rounded
@@ -40,18 +57,39 @@ function Card(props) {
               type: "material",
             }}
             containerStyle={{
-              backgroundColor: theme === "light" ? "#5cb25d" : "#003e29",
+              backgroundColor: "#5cb25d",
             }}
           />
-          <Text
+          <View
             style={{
-              fontSize: 15,
-              color: color,
-              ...extraStyle,
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              gap: 10,
+              alignItems: "center",
             }}
           >
-            {text}
-          </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                color: color,
+                ...extraStyle,
+                justifySelf: "start",
+              }}
+            >
+              {text}
+            </Text>
+            {text === "Dark Mode" && (
+              <Switch
+                style={{ height: 35 }}
+                value={isDarkTheme}
+                onToggle={toggleTheme}
+                offTrackColor="#767577"
+                onTrackColor="#81b0ff"
+                thumbColor={isDarkTheme ? "#5cb25d" : "#f4f3f4"}
+              />
+            )}
+          </View>
         </View>
       </RCard>
     </TouchableOpacity>

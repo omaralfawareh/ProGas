@@ -1,19 +1,21 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Avatar, BottomSheet, Card as RCard, Icon } from "@rneui/themed";
-import { Input, Button, Switch } from "native-base";
-import { auth } from "../firebase";
+import { Input, Button } from "native-base";
+import { auth, db } from "../firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Card from "../components/profile/Card";
 import AuthContext from "../store/auth-context";
 import { useTheme } from "../store/theme-context";
+import { doc, getDoc } from "firebase/firestore";
 
 function Profile() {
   const authCtx = useContext(AuthContext);
   const [isAccountVisible, setIsAcountVisible] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
-  const { colors, theme, toggleTheme } = useTheme();
+  const { colors, theme } = useTheme();
   const isDarkTheme = theme === "dark";
+  const [userData, setUserData] = useState(null);
 
   function changePassword() {
     if (!authCtx?.user) return;
@@ -25,6 +27,19 @@ function Profile() {
         console.log("FAILED");
       });
   }
+  useEffect(() => {
+    if (!authCtx?.user) return;
+
+    const fetchSub = async () => {
+      const docRef = doc(db, "users", authCtx.user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setUserData(docSnap.data());
+      }
+    };
+    fetchSub();
+  }, [authCtx?.userData]);
 
   const styles = StyleSheet.create({
     container: {
@@ -66,7 +81,6 @@ function Profile() {
       fontSize: 18,
     },
   });
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View
@@ -120,15 +134,15 @@ function Profile() {
                 style={styles.inputField}
                 type="text"
                 placeholder="Full Name"
-                value={"Omar Alfawareh"}
+                value={""}
                 isReadOnly={true}
               />
               <Input
                 size="lg"
                 style={styles.inputField}
                 type="text"
-                placeholder="Email"
-                value={"alfawareho@gmail.com"}
+                placeholder="Email Address"
+                value={""}
                 isReadOnly={true}
               />
               <Input
@@ -136,7 +150,7 @@ function Profile() {
                 style={styles.inputField}
                 type="text"
                 placeholder="Phone Number"
-                value={"0791141046"}
+                value={""}
                 isReadOnly={true}
               />
             </View>
@@ -148,8 +162,8 @@ function Profile() {
                 size="lg"
                 style={styles.inputField}
                 type="text"
-                placeholder="Full Name"
-                value={"Basic Subscription"}
+                placeholder="Login to Subscribe"
+                value={userData?.subscription}
                 isReadOnly={true}
               />
             </View>
@@ -161,7 +175,7 @@ function Profile() {
                   marginTop: 55,
                   width: 55,
                   height: 55,
-                  backgroundColor: theme === "light" ? "#5cb25d" : "#003e29",
+                  backgroundColor: "#5cb25d",
                 }}
               >
                 <Icon name="close" type="material" />
@@ -183,14 +197,11 @@ function Profile() {
             <Text style={{ ...styles.title, marginBottom: 10, fontSize: 20 }}>
               Reset Password
             </Text>
-            <View style={{ gap: 10 }}>
-              <Text style={{ color: colors.text }}>
+            <View style={{ gap: 10, marginTop: 25 }}>
+              <Text style={{ color: colors.text, textAlign: "center" }}>
                 Press confirm to reset your password.
               </Text>
-              <Text style={{ color: colors.text }}>
-                An email will be sent to you.
-              </Text>
-              <Text style={{ color: colors.text }}>
+              <Text style={{ color: colors.text, textAlign: "center" }}>
                 Follow the provided instructions in the email.
               </Text>
             </View>
@@ -198,7 +209,7 @@ function Profile() {
               <Button
                 colorScheme="success"
                 style={{
-                  backgroundColor: theme === "light" ? "#5cb25d" : "#003e29",
+                  backgroundColor: "#5cb25d",
                 }}
                 onPress={changePassword}
               >
@@ -214,7 +225,7 @@ function Profile() {
                   marginTop: 125,
                   width: 55,
                   height: 55,
-                  backgroundColor: theme === "light" ? "#5cb25d" : "#003e29",
+                  backgroundColor: "#5cb25d",
                 }}
               >
                 <Icon name="close" type="material" />

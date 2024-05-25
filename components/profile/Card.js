@@ -30,9 +30,9 @@ function Card(props) {
 
   const handlePress = () => {
     if (text === "Dark Mode") {
-      toggleTheme(); // Toggle the theme when "Dark Mode" card is pressed
+      toggleTheme();
     } else {
-      onPress(); // Call the original onPress function for other cards
+      onPress();
     }
   };
 

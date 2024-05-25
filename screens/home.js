@@ -30,7 +30,6 @@ function Home() {
       try {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log("Document data:", docSnap.data());
           setUserData(docSnap.data());
         } else {
           console.log("No such document!");

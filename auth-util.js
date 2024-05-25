@@ -13,7 +13,7 @@ const provider = new GoogleAuthProvider();
 export async function loginWithEmail(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    Alert.alert("Success", `Welcome ${auth.currentUser.email}`);
+    // Alert.alert("Success", `Welcome ${auth.currentUser.email}`);
   } catch (error) {
     Alert.alert("Error", `Unsuccessful Login: ${error.message}`);
   }
@@ -31,7 +31,7 @@ export async function loginWithGoogle() {
 export async function signUpWithEmail(email, password) {
   try {
     await createUserWithEmailAndPassword(auth, email, password);
-    Alert.alert("Successful Signup");
+    // Alert.alert("Successful Signup");
   } catch (error) {
     Alert.alert(`Unsuccessful Signup: ${error.message}`);
   }

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { useState } from "react";
 import { Input, Button } from "native-base";
 import { signUpWithEmail as signUp } from "../auth-util";
@@ -8,21 +8,27 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { theme, colors } = useTheme();
+  const { colors } = useTheme();
 
   function validatePassword() {
-    if (password.length < 6) {
-      return false;
-    } else if (password !== confirmPassword) {
-      return false;
-    }
-    return true;
+    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(password) && password === confirmPassword;
   }
+
   function validateEmail() {
-    return true;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
+
   function handleSignUp() {
-    if (validatePassword() && validateEmail()) {
+    if (!validateEmail()) {
+      Alert.alert("Invalid Email", "Please enter a valid email address.");
+    } else if (!validatePassword()) {
+      Alert.alert(
+        "Invalid Password",
+        "Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and match the confirmation password."
+      );
+    } else {
       signUp(email, password)
         .then(() => {
           console.log("SignUp Successful");
@@ -32,7 +38,8 @@ function SignUp() {
         });
     }
   }
-  const style = StyleSheet.create({
+
+  const styles = StyleSheet.create({
     inputContainer: {
       flex: 1,
       justifyContent: "center",
@@ -59,39 +66,40 @@ function SignUp() {
       width: "100%",
     },
   });
+
   return (
-    <View style={style.inputContainer}>
-      <Text style={style.text}>SignUp</Text>
-      <View style={style.inputFieldContainer}>
+    <View style={styles.inputContainer}>
+      <Text style={styles.text}>SignUp</Text>
+      <View style={styles.inputFieldContainer}>
         <Input
-          style={style.inputField}
+          style={styles.inputField}
           type="text"
           placeholder="Email"
           value={email}
           onChangeText={(text) => setEmail(text)}
         ></Input>
       </View>
-      <View style={style.inputFieldContainer}>
+      <View style={styles.inputFieldContainer}>
         <Input
-          style={style.inputField}
+          style={styles.inputField}
           type="password"
           placeholder="Password"
           value={password}
           onChangeText={(text) => setPassword(text)}
         ></Input>
       </View>
-      <View style={style.inputFieldContainer}>
+      <View style={styles.inputFieldContainer}>
         <Input
-          style={style.inputField}
+          style={styles.inputField}
           type="password"
           placeholder="Confirm Password"
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
         ></Input>
       </View>
-      <View style={style.inputFieldContainer}>
+      <View style={styles.inputFieldContainer}>
         <Button
-          style={style.button}
+          style={styles.button}
           colorScheme="success"
           onPress={handleSignUp}
         >
@@ -101,4 +109,5 @@ function SignUp() {
     </View>
   );
 }
+
 export default SignUp;

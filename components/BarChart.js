@@ -1,19 +1,30 @@
-import { BarChart as Bar } from "react-native-chart-kit";
+import React from "react";
 import { View, Dimensions } from "react-native";
+import { BarChart as Bar } from "react-native-chart-kit";
 import { useTheme } from "../store/theme-context";
-import { color } from "@rneui/base";
 
-function BarChart() {
+function BarChart({ Data }) {
   const { theme } = useTheme();
 
+  const recentGasolinePrice = (
+    Data.Actual_Months.slice(-1)[0]["Gasoline-95"] / 1000
+  ).toFixed(3);
+  const recentDieselPrice = (
+    Data.Actual_Months.slice(-1)[0]["Diesel"] / 1000
+  ).toFixed(3);
+  const recentGasoline90Price = (
+    Data.Actual_Months.slice(-1)[0]["Gasoline-90"] / 1000
+  ).toFixed(3);
+
   const data = {
-    labels: ["Gasoline", "Diesel", "Natural Gas"],
+    labels: ["Gasoline", "Diesel", "Gasoline 95"],
     datasets: [
       {
-        data: [120, 110, 135],
+        data: [recentGasoline90Price, recentDieselPrice, recentGasolinePrice],
       },
     ],
   };
+
   return (
     <View
       style={{
@@ -29,12 +40,12 @@ function BarChart() {
         data={data}
         width={Dimensions.get("window").width - 20}
         height={250}
-        yAxisLabel=""
+        yAxisLabel="JOD"
         chartConfig={{
           backgroundColor: theme === "light" ? "#003e29" : "black",
-          backgroundGradientFrom: theme === "light" ? "#003e29" : "black", // Green gradient start color
-          backgroundGradientTo: theme === "light" ? "#81c784" : "black", // Green gradient end color
-          decimalPlaces: 2, // optional, defaults to 2dp
+          backgroundGradientFrom: theme === "light" ? "#003e29" : "black",
+          backgroundGradientTo: theme === "light" ? "#81c784" : "black",
+          decimalPlaces: 3,
           color: (opacity = 1) => {
             return theme === "light"
               ? `rgba(255, 255, 255, ${opacity})`
@@ -51,4 +62,5 @@ function BarChart() {
     </View>
   );
 }
+
 export default BarChart;

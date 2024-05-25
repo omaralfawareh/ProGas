@@ -1,9 +1,29 @@
-import { LineChart } from "react-native-chart-kit";
+import React from "react";
 import { View, Dimensions } from "react-native";
+import { LineChart } from "react-native-chart-kit";
 import { useTheme } from "../store/theme-context";
 
-function Graph() {
+function Graph({ Data, dataType }) {
   const { theme, colors } = useTheme();
+
+  const dataKey =
+    dataType === "Gasoline"
+      ? "Gasoline-90"
+      : dataType === "Diesel"
+      ? "Diesel"
+      : "Gasoline-95";
+
+  const labels = Data.Actual_Months.slice(-6).map(
+    (monthData) => monthData.Date
+  );
+
+  const actualData = Data.Actual_Months.slice(-6).map((monthData) => {
+    return monthData[dataKey] / 1000;
+  });
+
+  const previousData = Data.Previous_Months.slice(-6).map((monthData) => {
+    return monthData[dataKey] / 1000;
+  });
 
   return (
     <View
@@ -16,48 +36,25 @@ function Graph() {
     >
       <LineChart
         data={{
-          labels: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-          ],
+          labels: labels,
 
           datasets: [
             {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
+              data: actualData,
             },
             {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
+              data: previousData,
               color: () => {
                 return theme === "light" ? "black" : "#003e29";
               },
             },
           ],
-          legend: ["Actual", "Predicted"], // optional
+          legend: ["Actual", "Predicted"],
         }}
-        width={Dimensions.get("window").width - 20} // from react-native
+        width={Dimensions.get("window").width - 20}
         height={220}
         yAxisLabel="JOD"
-        // yAxisSuffix="k"
-        yAxisInterval={0.5} // optional, defaults to 1
+        yAxisInterval={0.5}
         chartConfig={{
           backgroundColor: colors.graphBackground,
           backgroundGradientFrom: colors.graphBackground,
@@ -82,4 +79,5 @@ function Graph() {
     </View>
   );
 }
+
 export default Graph;
